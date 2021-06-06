@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- /book/products = product listing (per event) -->
+    <template id="bookable" inherit_id="website_sale.products" active="True" customize_show="True" name="Bookable Products">
+    </template>
+
+    <!-- /book = booking events -->
+    <template id="events" active="True" name="Booking Events">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Prenotazioni</t>
+            <div class="row booking-event" t-foreach="events" t-as="event">
+                <h6 class="col-9" t-field="event.title"/>
+                <div class="col-3 small">
+                    <t t-if="event.date_from">dal <span t-field="event.date_from"/></t>
+                    <t t-if="event.date_to"> fino al <span t-field="event.date_to"/></t>
+                </div>
+                <div class="col-12" t-field="event.description"/>
+                <div class="col d-flex justify-content-center">
+                    <a role="button" id="add_to_cart" href="#" class="btn mt8 center btn-primary">Vedi Prodotti</a>
+                </div>
+            </div>
+            <t t-if="not events">
+                <div class="text-center text-muted oe_product">
+                    <h3 class="css_editable_display mt8">No booking event defined.</h3>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

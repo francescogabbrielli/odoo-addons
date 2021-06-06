@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+
+        <record model="ir.model.access" id="access_product_booking_user">
+            <field name="name">product.booking.user</field>
+            <field name="model_id" ref="model_product_booking"/>
+            <field name="group_id" ref="sales_team.group_sale_salesman"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+    </data>
+
+</odoo>

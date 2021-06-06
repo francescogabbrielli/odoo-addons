@@ -1,0 +1,15 @@
+#. module: product_booking
+#: model:ir.ui.menu,name:product_booking.menu_sale_bookings
+msgid "Bookings"
+msgstr "Prenotazioni"
+
+#. module: product_booking
+#: model:ir.actions.act_window,name:product_booking.action_product_bookings
+msgid "Booking Events"
+msgstr "Eventi di Prenotazione"
+
+
+#. module: product_booking
+#: model:ir.model,name:product_booking.model_product_booking
+msgid "Booking"
+msgstr "Prenotazione"

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <act_window id="action_product_bookings"
+            name="List Bookings"
+            res_model="product.booking"
+            view_mode="tree,form"/>
+
+    <menuitem id="menu_sale_bookings"
+            action="action_product_bookings"
+            name="Bookings"
+            parent="sale.sale_order_menu"
+            groups="sales_team.group_sale_salesman"
+            sequence="2" />
+
+    <!-- Product bookable -->
+    <record model="ir.ui.view" id="product_supplierinfo_tree_view">
+        <field name="name">product.booking.supplierinfo.tree</field>
+        <field name="priority" eval="99"/>
+        <field name="model">product.supplierinfo</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="product_tmpl_id" string="Prodotto" readonly="1"/>
+                <field name="product_name" string="Descrizione" readonly="1"/>
+                <field name="price" string="Prezzo" readonly="1"/>
+                <field name="product_uom" string="Unità"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Booking(Event) -->
+    <record model="ir.ui.view" id="product_booking_tree_view">
+        <field name="name">product.booking.tree</field>
+        <field name="model">product.booking</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="create_date"/>
+                <field name="supplier"/>
+                <field name="date_to"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_booking_form_view">
+        <field name="name">product.booking.form</field>
+        <field name="model">product.booking</field>
+        <field name="arch" type="xml">
+            <form string="Booking Form">
+                <sheet>
+                    <group name="info">
+                        <group><field name="create_uid" string="Creato da"/></group>
+                        <group><field name="create_date" string="in data"/></group>
+                    </group>
+                    <group name="main" string="Evento">
+                        <group name="left">
+                            <field name="title"/>
+                            <field name="description"/>
+                        </group>
+                        <group name="right">
+                            <field name="supplier"/>
+                            <field name="status"/>
+                        </group>
+                    </group>
+                    <group name="dates" string="Validità">
+                        <group><field name="date_from"/></group>
+                        <group><field name="date_to"/></group>
+                    </group>
+                    <group name="products" string="Prodotti prenotabili">
+                        <field name="products" nolabel="1" domain="[('name', '=', supplier)]" context="{
+                                'tree_view_ref': 'product_booking.product_supplierinfo_tree_view',
+                                'default_name': context.get('name',supplier)
+                        }"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
