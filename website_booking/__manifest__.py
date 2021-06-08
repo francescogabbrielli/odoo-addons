@@ -12,5 +12,6 @@
         'security/website_booking.xml',
         'views/assets.xml',
         'views/templates.xml',
-    ]
+    ],
+    'qweb': ['static/src/xml/*.xml'],
 }

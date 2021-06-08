@@ -2,6 +2,7 @@ import logging
 
 from odoo import fields, http, tools
 from odoo.addons.website_sale.controllers.main import WebsiteSale
+from odoo.addons.http_routing.models.ir_http import slug
 
 _logger = logging.getLogger(__name__)
 
@@ -32,7 +33,13 @@ class WebsiteBooking(WebsiteSale):
     def book_products(self, booking_event, **kwargs):
         self.isBookingRoute = True  # Fix Odoo BUG
         # allow products even if not published
-        return super().shop(page=0, category=None, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
+
+        products = http.request.env['product.template'].search([('id', 'in', booking_event.sudo().products.ids)])
+        return http.request.render("website_booking.products", {
+            'event': booking_event,
+            'products': products
+        })
+        #return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
 
     def _get_search_domain(self, search, category, attrib_values):
         if self.isBookingRoute:
