@@ -28,15 +28,17 @@ class WebsiteBooking(WebsiteSale):
             'events': events
         })
 
-    @http.route(['/book/products'], type='http', auth='public', website=True)
-    def book_products(self, page=0, category=None, search='', ppg=False, **post):
+    @http.route(['''/book/products/<model("product.booking"):booking_event>'''], type='http', auth='public', website=True)
+    def book_products(self, booking_event, **kwargs):
         self.isBookingRoute = True  # Fix Odoo BUG
-        return super().shop(page=page, category=category, search=search, ppg=ppg, **post)
+        # allow products even if not published
+        return super().shop(page=0, category=None, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
 
     def _get_search_domain(self, search, category, attrib_values):
-        domain = super()._get_search_domain(search, category, attrib_values)
-        _logger.info("Products search domain %s: %s" % (domain, __name__))
         if self.isBookingRoute:
-            domain.remove(('sale_ok', '=', True))
-        #     domain += [('book_ok', '=', True)]
-        return domain
+            #domain = http.request.website.sale_product_domain()
+            #domain.remove(('sale_ok', '=', True))
+            domain = [('id', 'in', search)]
+            _logger.info("Products search domain %s: %s" % (domain, __name__))
+            return domain
+        return super()._get_search_domain(search, category, attrib_values)

@@ -2,6 +2,7 @@
 <odoo>
     <!-- /book/products = product listing (per event) -->
     <template id="bookable" inherit_id="website_sale.products" active="True" customize_show="True" name="Bookable Products">
+
     </template>
 
     <!-- /book = booking events -->
@@ -16,7 +17,7 @@
                 </div>
                 <div class="col-12" t-field="event.description"/>
                 <div class="col d-flex justify-content-center">
-                    <a role="button" id="add_to_cart" href="#" class="btn mt8 center btn-primary">Vedi Prodotti</a>
+                    <a role="button" id="event_products" t-attf-href="/book/products/{{event.id}}" class="btn mt8 center btn-primary">Vedi Prodotti</a>
                 </div>
             </div>
             <t t-if="not events">

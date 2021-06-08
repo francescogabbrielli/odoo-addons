@@ -29,7 +29,7 @@ class ProductBooking(models.Model):
 
     @api.multi
     def name_get(self):
-        return [(rec.id, "[%s] %s" % (rec.code, rec.description)) for rec in self]
+        return [(rec.id, "[%s] %s" % (rec.code, rec.title)) for rec in self]
 
     @api.model
     def create(self, vals):
