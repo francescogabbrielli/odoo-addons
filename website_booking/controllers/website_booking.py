@@ -33,11 +33,13 @@ class WebsiteBooking(WebsiteSale):
     def book_products(self, booking_event, **kwargs):
         self.isBookingRoute = True  # Fix Odoo BUG
         # allow products even if not published
-
-        products = http.request.env['product.template'].search([('id', 'in', booking_event.sudo().products.ids)])
+        product_model = http.request.env['product.template'].sudo()
+        products = product_model.search([('id', 'in', booking_event.sudo().products.ids)])
+        pricelist_context, pricelist = self._get_pricelist_context()
         return http.request.render("website_booking.products", {
             'event': booking_event,
-            'products': products
+            'products': products,
+            'pricelist': pricelist
         })
         #return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
 

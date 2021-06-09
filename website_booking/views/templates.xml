@@ -24,17 +24,21 @@
         </t>
     </template>
 
+    <!-- /book/products = bookable products per event -->
     <template id="products" name="Bookable Products">
         <t t-call="website.layout">
             <t t-set="additional_title" t-value="event.title"/>
             <div id="wrap" class="js_sale">
                 <div class="row mt-3">
-                    <div class="col-lg-12" id="products_grid">
+                    <div class="container" id="products_grid">
                         <h3 t-field="event.title"/>
-                        <div t-foreach="products" t-as="product" class="col">
-                            <div class="oe_product_cart" t-att-data-publish="product.website_published and 'on' or 'off'">
-                                <t t-set="product_image_big" t-value="False" />
-                                <t t-call="website_booking.products_item" />
+                        <p t-field="event.description"/>
+                        <div class="row">
+                            <div t-foreach="products" t-as="product" class="col-xs-12 col-md-6 col-4">
+                                <div class="oe_product_cart">
+                                    <t t-set="product_image_big" t-value="False" />
+                                    <t t-call="website_booking.products_item" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -44,24 +48,43 @@
     </template>
 
     <template id="products_item">
-        <span t-field="product.name"/>
+        <t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>
         <div class="oe_product_image">
             <a itemprop="url" t-attf-href="/book/product/{{product.id}}">
-                <span t-field="product.image" t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300'}"/>
+                <span t-field="product.image" t-options="{'widget': 'image', 'resize': '300x300'}"/>
             </a>
         </div>
+        <section>
+            <h6>
+                <a itemprop="name" t-attf-href="/book/product/{{product.id}}" t-att-content="product.name" t-field="product.name" />
+            </h6>
+            <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price">
+                <b>
+                    <t t-if="True"><!-- compatibility 12.0 -->
+                        <del t-attf-class="text-danger mr8 {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="white-space: nowrap;" t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />
+                    </t>
+                    <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    <span itemprop="price" style="display:none;" t-esc="combination_info['price']" />
+                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+                </b>
+                <t t-call="website_booking.uom"/>
+            </div>
+        </section>
+    </template>
+
+    <template id="uom">
+        /<i class="oe_price" t-field="product.uom_id"/>
     </template>
 
     <!-- add UoM to price -->
     <template id="uom_products_item" inherit_id="website_sale.products_item">
         <xpath expr="//b" position="after">
-            /<i class="oe_price" t-field="product.uom_id"/>
-            <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+            <t t-call="website_booking.uom"/>
         </xpath>
     </template>
     <template id="uom_product_price" inherit_id="website_sale.product_price">
         <xpath expr="//b" position="after">
-            /<i class="oe_price" t-field="product.uom_id"/>
+            <t t-call="website_booking.uom"/>
         </xpath>
     </template>
 
