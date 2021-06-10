@@ -35,13 +35,25 @@ class WebsiteBooking(WebsiteSale):
         # allow products even if not published
         product_model = http.request.env['product.template'].sudo()
         products = product_model.search([('id', 'in', booking_event.sudo().products.ids)])
-        pricelist_context, pricelist = self._get_pricelist_context()
+        _, pricelist = self._get_pricelist_context()
         return http.request.render("website_booking.products", {
             'event': booking_event,
             'products': products,
             'pricelist': pricelist
         })
         #return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
+
+    @http.route(['''/book/product/<model("product.booking"):booking_event>/<model("product.template"):product>'''], type='http', auth='public', website=True)
+    def book_product(self, booking_event, product, **kwargs):
+        response = super().product(product, category=None, search='', **kwargs)
+        response.qcontext['event'] = booking_event
+        return response
+        # return http.request.render("website_booking.product", {
+        #     'event': booking_event,
+        #     'product': product,
+        #     'pricelist': http.request.website.get_current_pricelist()
+        # })
+
 
     def _get_search_domain(self, search, category, attrib_values):
         if self.isBookingRoute:

@@ -4,6 +4,7 @@
     <template id="assets_frontend" name="Booking Asset" inherit_id="web.assets_frontend">
         <xpath expr="link[last()]" position="after">
             <link rel="stylesheet" href="/website_booking/static/src/css/style.css"/>
+            <script type="text/javascript" src="/website_booking/static/src/js/website_booking.js"></script>
         </xpath>
     </template>
 

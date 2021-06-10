@@ -51,6 +51,10 @@ class ProductBooking(models.Model):
         if len(self.products) == 0:
             raise ValidationError("Non ci sono prodotti selezionati!")
 
+    @api.one
+    def book(self, product):
+        return "Booked: %s!" % product
+
 
 class ProductBookingLine(models.Model):
     _name = 'product.booking.line'

@@ -5,22 +5,24 @@
     <template id="events" active="True" name="Booking Events">
         <t t-call="website.layout">
             <t t-set="additional_title">Prenotazioni</t>
-            <div class="row booking-event" t-foreach="events" t-as="event">
-                <h6 class="col-9" t-field="event.title"/>
-                <div class="col-3 small">
-                    <t t-if="event.date_from">dal <span t-field="event.date_from"/></t>
-                    <t t-if="event.date_to"> fino al <span t-field="event.date_to"/></t>
+            <div class="container">
+                <div class="row booking-event" t-foreach="events" t-as="event">
+                    <h6 class="col-9" t-field="event.title"/>
+                    <div class="col-3 small">
+                        <t t-if="event.date_from">dal <span t-field="event.date_from"/></t>
+                        <t t-if="event.date_to"> fino al <span t-field="event.date_to"/></t>
+                    </div>
+                    <div class="col-12" t-field="event.description"/>
+                    <div class="col d-flex justify-content-center">
+                        <a role="button" id="event_products" t-attf-href="/book/products/{{event.id}}" class="btn mt8 center btn-primary">Vedi Prodotti</a>
+                    </div>
                 </div>
-                <div class="col-12" t-field="event.description"/>
-                <div class="col d-flex justify-content-center">
-                    <a role="button" id="event_products" t-attf-href="/book/products/{{event.id}}" class="btn mt8 center btn-primary">Vedi Prodotti</a>
-                </div>
+                <t t-if="not events">
+                    <div class="text-center text-muted oe_product">
+                        <h3 class="css_editable_display mt8">Nessuna prenotazione disponibile al momento</h3>
+                    </div>
+                </t>
             </div>
-            <t t-if="not events">
-                <div class="text-center text-muted oe_product">
-                    <h3 class="css_editable_display mt8">Nessuna prenotazione disponibile al momento</h3>
-                </div>
-            </t>
         </t>
     </template>
 
@@ -34,7 +36,7 @@
                         <h3 t-field="event.title"/>
                         <p t-field="event.description"/>
                         <div class="row">
-                            <div t-foreach="products" t-as="product" class="col-xs-12 col-md-6 col-4">
+                            <div t-foreach="products" t-as="product" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                                 <div class="oe_product_cart">
                                     <t t-set="product_image_big" t-value="False" />
                                     <t t-call="website_booking.products_item" />
@@ -50,13 +52,16 @@
     <template id="products_item">
         <t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1, pricelist=pricelist)"/>
         <div class="oe_product_image">
-            <a itemprop="url" t-attf-href="/book/product/{{product.id}}">
+            <a itemprop="url" t-attf-href="/book/product/{{event.id}}/{{product.id}}">
                 <span t-field="product.image" t-options="{'widget': 'image', 'resize': '300x300'}"/>
             </a>
         </div>
         <section>
+            <div style="float:right">
+                <a role="button" t-attf-href="/book/products/{{event.id}}" class="btn mt8 center btn-primary">Prenota</a>
+            </div>
             <h6>
-                <a itemprop="name" t-attf-href="/book/product/{{product.id}}" t-att-content="product.name" t-field="product.name" />
+                <a itemprop="name" t-attf-href="/book/product/{{event.id}}/{{product.id}}" t-att-content="product.name" t-field="product.name" />
             </h6>
             <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price">
                 <b>
@@ -70,6 +75,21 @@
                 <t t-call="website_booking.uom"/>
             </div>
         </section>
+    </template>
+
+    <template id="product" inherit_id="website_sale.product">
+        <xpath expr="//section/div[1]" position="before">
+            <t t-if="event">
+                <h6><a t-attf-href="/book/products/{{event.id}}" t-field="event.title"/></h6>
+            </t>
+            <t t-else="" id="cond1"/>
+        </xpath>
+        <xpath expr="//t[@id='cond1']" position="inside">
+            <xpath expr="//section/div[1]" position="move"/>
+        </xpath>
+        <xpath t-if="event" expr="//a[@id='add_to_cart']" position="replace">
+            <a href="javascript:new Booking().book()" class="btn btn-primary mt8" js-class="booking">Prenota</a>
+        </xpath>
     </template>
 
     <template id="uom">
