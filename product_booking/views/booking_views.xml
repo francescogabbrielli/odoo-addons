@@ -2,14 +2,31 @@
 <odoo>
 
     <act_window id="action_product_booking_events"
-            name="List Bookings"
+            name="List Booking Events"
             res_model="product.booking.event"
             view_mode="tree,form"/>
 
+    <act_window id="action_product_bookings"
+            name="List Bookings"
+            res_model="product.booking"
+            view_mode="tree,form"/>
+
     <menuitem id="menu_sale_bookings"
+        name="Bookings"
+        parent="sale.sale_menu_root"
+        sequence="2"/>
+
+    <menuitem id="menu_product_booking_events"
             action="action_product_booking_events"
+            name="Booking Events"
+            parent="product_booking.menu_sale_bookings"
+            groups="sales_team.group_sale_salesman"
+            sequence="1" />
+
+    <menuitem id="menu_product_bookings"
+            action="action_product_bookings"
             name="Bookings"
-            parent="sale.sale_order_menu"
+            parent="product_booking.menu_sale_bookings"
             groups="sales_team.group_sale_salesman"
             sequence="2" />
 
@@ -60,7 +77,7 @@
         <field name="name">product.booking.event.form</field>
         <field name="model">product.booking.event</field>
         <field name="arch" type="xml">
-            <form string="Booking Form">
+            <form>
                 <sheet>
                     <group name="info">
                         <group><field name="create_uid" string="Creato da"/></group>
@@ -88,6 +105,40 @@
                                 'tree_view_ref': 'product_booking.product_supplierinfo_tree_view'
                                }"
                                options="{'no_create': true}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_booking_tree_view">
+        <field name="name">product.booking.tree</field>
+        <field name="model">product.booking</field>
+        <field name="arch" type="xml">
+            <tree string="Prenotazione">
+                <field name="code"/>
+                <field name="date"/>
+                <field name="customer"/>
+                <field name="event"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_booking_form_view">
+        <field name="name">product.booking.form</field>
+        <field name="model">product.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="main">
+                        <field name="date"/>
+                        <field name="customer" default_focus="1"/>
+                        <field name="event" options="{'no_create': true}"/>
+                        <field name="products" options="{'no_create': true}"
+                               context="{
+                                'form_view_ref': 'product_booking.product_supplierinfo_form_view',
+                                'tree_view_ref': 'product_booking.product_supplierinfo_tree_view'
+                               }"/>
                     </group>
                 </sheet>
             </form>

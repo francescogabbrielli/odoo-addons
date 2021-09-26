@@ -33,10 +33,26 @@ msgstr ""
 "\n"
 "    "
 
+
+
+
 #. module: product_booking
 #: model:ir.ui.menu,name:product_booking.menu_sale_bookings
+#: model:ir.ui.menu,name:product_booking.menu_product_bookings
+#: model:ir.actions.act_window,name:product_booking.action_product_bookings
 msgid "Bookings"
 msgstr "Prenotazioni"
+
+#. module: product_booking
+#: model:ir.model,name:product_booking.model_product_booking
+msgid "Booking"
+msgstr "Prenotazione"
+
+
+#. module: product_booking
+#: model:ir.ui.menu,name:product_booking.menu_product_booking_events
+msgid "Events"
+msgstr "Eventi"
 
 #. module: product_booking
 #: model:ir.actions.act_window,name:product_booking.action_product_booking_events
