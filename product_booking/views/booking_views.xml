@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <act_window id="action_product_bookings"
+    <act_window id="action_product_booking_events"
             name="List Bookings"
-            res_model="product.booking"
+            res_model="product.booking.event"
             view_mode="tree,form"/>
 
     <menuitem id="menu_sale_bookings"
-            action="action_product_bookings"
+            action="action_product_booking_events"
             name="Bookings"
             parent="sale.sale_order_menu"
             groups="sales_team.group_sale_salesman"
             sequence="2" />
 
     <!-- Product bookable -->
-    <record model="ir.ui.view" id="product_supplierinfo_tree_view">
-        <field name="name">product.booking.supplierinfo.tree</field>
-        <field name="priority" eval="99"/>
+    <record model="ir.ui.view" id="product_supplierinfo_form_view">
         <field name="model">product.supplierinfo</field>
+        <field name="priority" eval="32"/>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <form editable="bottom" create="false">
+                <group>
+                    <field name="product_tmpl_id" string="Prodotto" readonly="1"/>
+                    <field name="product_name" string="Descrizione" readonly="1"/>
+                    <field name="price" string="Prezzo" readonly="1"/>
+                    <field name="product_uom" string="Unità"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="product_supplierinfo_tree_view">
+        <field name="model">product.supplierinfo</field>
+        <field name="priority" eval="32"/>
+        <field name="arch" type="xml">
+            <tree editable="top">
                 <field name="product_tmpl_id" string="Prodotto" readonly="1"/>
                 <field name="product_name" string="Descrizione" readonly="1"/>
                 <field name="price" string="Prezzo" readonly="1"/>
@@ -29,11 +42,11 @@
     </record>
 
     <!-- Booking(Event) -->
-    <record model="ir.ui.view" id="product_booking_tree_view">
-        <field name="name">product.booking.tree</field>
-        <field name="model">product.booking</field>
+    <record model="ir.ui.view" id="product_booking_event_tree_view">
+        <field name="name">product.booking.event.tree</field>
+        <field name="model">product.booking.event</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree string="Evento">
                 <field name="code"/>
                 <field name="create_date"/>
                 <field name="supplier"/>
@@ -43,9 +56,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_booking_form_view">
-        <field name="name">product.booking.form</field>
-        <field name="model">product.booking</field>
+    <record model="ir.ui.view" id="product_booking_event_form_view">
+        <field name="name">product.booking.event.form</field>
+        <field name="model">product.booking.event</field>
         <field name="arch" type="xml">
             <form string="Booking Form">
                 <sheet>
@@ -68,10 +81,13 @@
                         <group><field name="date_to"/></group>
                     </group>
                     <group name="products" string="Prodotti prenotabili">
-                        <field name="products" nolabel="1" domain="[('name', '=', supplier)]" context="{
-                                'tree_view_ref': 'product_booking.product_supplierinfo_tree_view',
-                                'default_name': context.get('name',supplier)
-                        }"/>
+                        <field name="products" nolabel="1"
+                               domain="[('name', '=', supplier)]"
+                               context="{
+                                'form_view_ref': 'product_booking.product_supplierinfo_form_view',
+                                'tree_view_ref': 'product_booking.product_supplierinfo_tree_view'
+                               }"
+                               options="{'no_create': true}"/>
                     </group>
                 </sheet>
             </form>

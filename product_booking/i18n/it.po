@@ -1,15 +1,50 @@
+#. module: base
+#: model:ir.module.module,summary:base.module_product_booking
+msgid "Sell your products online"
+msgstr "Vendita di prodotti in rete"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_product_booking
+msgid "Manage booking 'events' for products"
+msgstr "Gestisce 'eventi' di prenotazioni per i prodotti"
+
+#. module: base
+#: model:ir.module.module,description:base.module_product_booking
+msgid ""
+"\n"
+"Manage a booking section inside sales module\n"
+"===================================================================\n"
+"\n"
+"Features\n"
+"------------\n"
+"    * Create and manage booking events at the suppliers \n"
+"    * Insert and manage a single booking from a customer for a given product in an event\n"
+"\n"
+"    "
+msgstr ""
+"\n"
+"Gestisce una sezione di prenotazioni all'interno del modulo vendite\n"
+"===================================================================\n"
+"\n"
+"Funzionalità\n"
+"------------\n"
+"    * Creazione e gestione eventi di prenotazione presso i fornitore\n"
+"    * Inserimento e gestione delle singole prenotazioni dei clienti per un dato prodotto in un evento\n"
+"\n"
+"    "
+
 #. module: product_booking
 #: model:ir.ui.menu,name:product_booking.menu_sale_bookings
 msgid "Bookings"
 msgstr "Prenotazioni"
 
 #. module: product_booking
-#: model:ir.actions.act_window,name:product_booking.action_product_bookings
+#: model:ir.actions.act_window,name:product_booking.action_product_booking_events
 msgid "Booking Events"
 msgstr "Eventi di Prenotazione"
 
 
 #. module: product_booking
-#: model:ir.model,name:product_booking.model_product_booking
-msgid "Booking"
-msgstr "Prenotazione"
+#: model:ir.model,name:product_booking.model_product_booking_event
+msgid "Booking Event"
+msgstr "Evento Prenotazione"

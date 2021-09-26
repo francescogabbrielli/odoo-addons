@@ -8,9 +8,9 @@ from odoo.exceptions import ValidationError
 _logger = logging.getLogger(__name__)
 
 
-class ProductBooking(models.Model):
-    _name = 'product.booking'
-    _description = 'Booking'
+class BookingEvent(models.Model):
+    _name = 'product.booking.event'
+    _description = 'Booking Event'
     _order = "code"
 
     code = fields.Char(string='Numero Prenotazione', readonly=True, default="/", size=6)
@@ -33,9 +33,9 @@ class ProductBooking(models.Model):
 
     @api.model
     def create(self, vals):
-        obj = super(ProductBooking, self).create(vals)
+        obj = super(BookingEvent, self).create(vals)
         if obj.code == '/':
-            number = self.env['ir.sequence'].next_by_code('product.booking') or '/'
+            number = self.env['ir.sequence'].next_by_code('product.booking.event') or '/'
             obj.write({'code': number})
         return obj
 
@@ -52,7 +52,7 @@ class ProductBooking(models.Model):
             raise ValidationError("Non ci sono prodotti selezionati!")
 
 
-class ProductBookingLine(models.Model):
-    _name = 'product.booking.line'
-    _description = 'Booking Line'
+class Booking(models.Model):
+    _name = 'product.booking'
+    _description = 'Booking'
     _order = 'product'
