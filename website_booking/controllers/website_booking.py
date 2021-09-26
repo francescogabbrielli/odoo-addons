@@ -23,28 +23,28 @@ class WebsiteBooking(WebsiteSale):
 
     @http.route(['/book'], type='http', auth='public', website=True)
     def book(self, page=0, category=None, search='', ppg=False, **post):
-        events = http.request.env['product.booking']\
+        events = http.request.env['product.booking.event']\
             .search([('status', '=', 'A')], order="date_from, title")
         return http.request.render("website_booking.events", {
             'events': events
         })
 
-    @http.route(['''/book/products/<model("product.booking"):booking_event>'''], type='http', auth='public', website=True)
+    @http.route(['''/book/products/<model("product.booking.event"):booking_event>'''],
+                type='http', auth='public', website=True)
     def book_products(self, booking_event, **kwargs):
         self.isBookingRoute = True  # Fix Odoo BUG
         # allow products even if not published
 
-        products = http.request.env['product.template'].search([('id', 'in', booking_event.sudo().products.ids)])
+        products = http.request.env['product.template']\
+            .search([('id', 'in', booking_event.sudo().products.ids)])
         return http.request.render("website_booking.products", {
             'event': booking_event,
             'products': products
         })
-        #return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
+        # return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
 
     def _get_search_domain(self, search, category, attrib_values):
         if self.isBookingRoute:
-            #domain = http.request.website.sale_product_domain()
-            #domain.remove(('sale_ok', '=', True))
             domain = [('id', 'in', search)]
             _logger.info("Products search domain %s: %s" % (domain, __name__))
             return domain

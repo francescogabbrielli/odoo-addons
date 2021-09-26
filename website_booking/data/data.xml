@@ -2,13 +2,13 @@
 <odoo>
     <data noupdate="1">
         <record id="menu_book" model="website.menu">
-            <field name="name">Booking</field>
+            <field name="name">Bookings</field>
             <field name="url">/book</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence" type="int">21</field>
         </record>
         <record id="action_open_website_book" model="ir.actions.act_url">
-            <field name="name">Booking</field>
+            <field name="name">Bookings</field>
             <field name="target">self</field>
             <field name="url">/book</field>
         </record>

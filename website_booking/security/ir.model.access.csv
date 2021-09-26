@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_booking_public,product_booking.public,product_booking.model_product_booking,,1,0,0,0
+access_product_booking_event_public,product_booking_event.public,product_booking.model_product_booking_event,,1,0,0,0

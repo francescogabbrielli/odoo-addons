@@ -6,7 +6,7 @@
         <t t-call="website.layout">
             <t t-set="additional_title">Prenotazioni</t>
             <div class="row booking-event" t-foreach="events" t-as="event">
-                <h6 class="col-9" t-field="event.title"/>
+                <h2 class="col-9" t-field="event.title"/>
                 <div class="col-3 small">
                     <t t-if="event.date_from">dal <span t-field="event.date_from"/></t>
                     <t t-if="event.date_to"> fino al <span t-field="event.date_to"/></t>

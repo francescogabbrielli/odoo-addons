@@ -1,5 +1,5 @@
 {
-    'name': 'Prenotazioni Prodotto',
+    'name': 'Prenotazioni Prodotti Online',
     'category': 'Website',
     'summary': 'Permette agli utenti di prenotare prodotti online attraverso Eventi di Prenotazione',
     'version': '0.2',
