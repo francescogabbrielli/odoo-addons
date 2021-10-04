@@ -11,6 +11,11 @@
             res_model="product.booking"
             view_mode="tree,form"/>
 
+    <act_window id="action_report_bookings"
+            name="Report"
+            res_model="product.booking.report"
+            view_mode="tree,form"/>
+
     <menuitem id="menu_sale_bookings"
         name="Bookings"
         parent="sale.sale_menu_root"
@@ -30,7 +35,13 @@
             groups="sales_team.group_sale_salesman"
             sequence="2" />
 
-    <!-- Product bookable -->
+    <menuitem id="menu_booking_report"
+              action="action_report_bookings"
+              name="Report"
+              parent="product_booking.menu_sale_bookings"
+              groups="sales_team.group_sale_salesman"/>
+
+    <!-- ############################## Product bookable ############################### -->
     <record model="ir.ui.view" id="product_supplierinfo_form_view">
         <field name="model">product.supplierinfo</field>
         <field name="priority" eval="32"/>
@@ -58,8 +69,9 @@
         </field>
     </record>
 
-    <!-- Booking(Event) -->
-    <record model="ir.ui.view" id="product_booking_event_tree_view">
+
+    <!-- ################################# Booking Events ################################## -->
+    <record model="ir.ui.view" id="booking_event_tree_view">
         <field name="name">product.booking.event.tree</field>
         <field name="model">product.booking.event</field>
         <field name="arch" type="xml">
@@ -73,7 +85,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_booking_event_form_view">
+    <record model="ir.ui.view" id="booking_event_form_view">
         <field name="name">product.booking.event.form</field>
         <field name="model">product.booking.event</field>
         <field name="arch" type="xml">
@@ -111,7 +123,8 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_booking_tree_view">
+    <!-- #################################### Booking ###################################### -->
+    <record model="ir.ui.view" id="booking_tree_view">
         <field name="name">product.booking.tree</field>
         <field name="model">product.booking</field>
         <field name="arch" type="xml">
@@ -120,11 +133,12 @@
                 <field name="date"/>
                 <field name="customer"/>
                 <field name="event"/>
+                <field name="total"/>
             </tree>
         </field>
     </record>
 
-    <record model="ir.ui.view" id="product_booking_form_view">
+    <record model="ir.ui.view" id="booking_form_view">
         <field name="name">product.booking.form</field>
         <field name="model">product.booking</field>
         <field name="arch" type="xml">
@@ -133,11 +147,15 @@
                     <group name="main">
                         <field name="date"/>
                         <field name="customer" default_focus="1"/>
-                        <field name="event" options="{'no_create': true}"/>
-                        <field name="products" options="{'no_create': true}"
+                        <field name="event"/>
+                    </group>
+                    <field name="products" nolabel="1" invisible="1"/>
+                    <group name="products" string="Prodotti prenotati">
+                        <field name="booking_lines" nolabel="1"
                                context="{
-                                'form_view_ref': 'product_booking.product_supplierinfo_form_view',
-                                'tree_view_ref': 'product_booking.product_supplierinfo_tree_view'
+                                'default_event_id': event,
+                                'tree_view_ref': 'product_booking.booking_line_tree_view',
+                                'form_view_ref': 'product_booking.booking_line_form_view'
                                }"/>
                     </group>
                 </sheet>
@@ -145,4 +163,33 @@
         </field>
     </record>
 
+    <!-- ######################### Booking line (product booked) ######################### -->
+    <record model="ir.ui.view" id="booking_line_tree_view">
+        <field name="model">product.booking.line</field>
+        <field name="priority" eval="32"/>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="event" invisible="1"/>
+                <field name="product_domain" invisible="1"/>
+                <field name="product" string="Prodotto" options="{'no_create_edit': true}"/>
+                <field name="price" string="Prezzo" readonly="1"/>
+                <field name="quantity" string="Quantità"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="booking_line_form_view">
+        <field name="model">product.booking.line</field>
+        <field name="priority" eval="32"/>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="event" invisible="1"/>
+                    <field name="product_domain" invisible="1"/>
+                    <field name="product" string="Prodotto" options="{'no_create_edit': true}"/>
+                    <field name="price" string="Prezzo" readonly="1"/>
+                    <field name="quantity" string="Quantità"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>

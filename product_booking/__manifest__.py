@@ -1,8 +1,8 @@
 {
-    'name': 'Booking',
+    'name': 'Prenotazioni',
     'category': 'Sales',
-    'summary': 'Manage booking \'events\' for products',
-    'version': '0.4',
+    'summary': 'Gestisce eventi di prenotazione prodotti presso fornitori',
+    'version': '0.5',
     'description': """
 Manage a booking section inside sales module
 ===================================================================
@@ -14,7 +14,7 @@ Features
     
     """,
     'author': 'Francesco Gabbrielli',
-    'depends': ['product', 'purchase', 'sale'],
+    'depends': ['product', 'purchase', 'sale', 'web_domain_field'],
     'data': [
         'data/ir_sequence_data.xml',
         'security/booking_model_acl.xml',
