@@ -44,12 +44,17 @@
     </template>
 
     <template id="products_item">
+
+        <t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1)"/>
+
         <span t-field="product.name"/>
+
         <div class="oe_product_image">
-            <a itemprop="url" t-attf-href="/book/product/{{product.id}}">
+            <a itemprop="url" t-attf-href="/book/{{}}/{{product.id}}">
                 <span t-field="product.image" t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300'}"/>
             </a>
         </div>
+        
     </template>
 
     <!-- add UoM to price -->

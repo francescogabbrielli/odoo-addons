@@ -64,3 +64,8 @@ msgstr "Eventi di Prenotazione"
 #: model:ir.model,name:product_booking.model_product_booking_event
 msgid "Booking Event"
 msgstr "Evento Prenotazione"
+
+#. module: product_booking
+#: model:ir.actions.report,name:product_booking.action_report_booking
+msgid "Journals Audit"
+msgstr " Reģistru audits"

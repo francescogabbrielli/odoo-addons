@@ -29,7 +29,7 @@ class WebsiteBooking(WebsiteSale):
             'events': events
         })
 
-    @http.route(['''/book/products/<model("product.booking.event"):booking_event>'''],
+    @http.route(['''/book/<model("product.booking.event"):booking_event>'''],
                 type='http', auth='public', website=True)
     def book_products(self, booking_event, **kwargs):
         self.isBookingRoute = True  # Fix Odoo BUG
@@ -42,6 +42,13 @@ class WebsiteBooking(WebsiteSale):
             'products': products
         })
         # return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
+
+    @http.route(['''/book/<model("product.booking.event"):booking_event>/<model("product.template"):product>'''],
+                type='http', auth='public', website=True)
+    def book_product(self, booking_event, product):
+        return http.request.render("website_sale.product_item", {
+            'product': product
+        })
 
     def _get_search_domain(self, search, category, attrib_values):
         if self.isBookingRoute:

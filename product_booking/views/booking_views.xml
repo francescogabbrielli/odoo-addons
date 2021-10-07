@@ -11,10 +11,10 @@
             res_model="product.booking"
             view_mode="tree,form"/>
 
-    <act_window id="action_report_bookings"
+    <!--act_window id="action_report_bookings"
             name="Report"
-            res_model="product.booking.report"
-            view_mode="tree,form"/>
+            res_model="product_booking.report_bookings"
+            view_mode="tree,form"/-->
 
     <menuitem id="menu_sale_bookings"
         name="Bookings"
@@ -35,11 +35,11 @@
             groups="sales_team.group_sale_salesman"
             sequence="2" />
 
-    <menuitem id="menu_booking_report"
+    <!--menuitem id="menu_booking_report"
               action="action_report_bookings"
               name="Report"
               parent="product_booking.menu_sale_bookings"
-              groups="sales_team.group_sale_salesman"/>
+              groups="sales_team.group_sale_salesman"/-->
 
     <!-- ############################## Product bookable ############################### -->
     <record model="ir.ui.view" id="product_supplierinfo_form_view">

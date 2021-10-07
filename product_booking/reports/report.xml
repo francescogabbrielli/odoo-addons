@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <report
+            id="action_report_bookings"
+            model="product.booking"
+            string="Report"
+            report_type="qweb-html"
+            name="product_booking.report_bookings"
+            file="product_booking.report_bookings"
+            attachment="object.code + '.pdf'"
+            print_report_name="'Prenotazioni %s' % object.name"
+            groups="sales_team.group_sale_salesman"/>
+
+    </data>
+
+</odoo>

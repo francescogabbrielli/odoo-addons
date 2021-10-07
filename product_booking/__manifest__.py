@@ -18,6 +18,9 @@ Features
     'data': [
         'data/ir_sequence_data.xml',
         'security/booking_model_acl.xml',
-        'views/booking_views.xml'
+        'views/booking_views.xml',
+        'views/report_views.xml',
+        'reports/report.xml'
     ]
 }
+
