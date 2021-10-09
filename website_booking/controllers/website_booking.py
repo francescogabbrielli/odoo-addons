@@ -23,19 +23,19 @@ class WebsiteBooking(WebsiteSale):
 
     @http.route(['/book'], type='http', auth='public', website=True)
     def book(self, page=0, category=None, search='', ppg=False, **post):
-        events = http.request.env['product.booking']\
+        events = http.request.env['product.booking.event']\
             .search([('status', '=', 'A')], order="date_from, title")
         return http.request.render("website_booking.events", {
             'events': events
         })
 
-    @http.route(['''/book/products/<model("product.booking"):booking_event>'''], type='http', auth='public', website=True)
+    @http.route(['''/book/<model("product.booking.event"):booking_event>'''],
+                type='http', auth='public', website=True)
     def book_products(self, booking_event, **kwargs):
         self.isBookingRoute = True  # Fix Odoo BUG
         # allow products even if not published
-        product_model = http.request.env['product.template'].sudo()
-        products = product_model.search([('id', 'in', booking_event.sudo().products.ids)])
-        _, pricelist = self._get_pricelist_context()
+
+        products = http.request.env['product.template'].search([('id', 'in', booking_event.sudo().products.ids)])
         return http.request.render("website_booking.products", {
             'event': booking_event,
             'products': products,
@@ -44,7 +44,7 @@ class WebsiteBooking(WebsiteSale):
         #return super().shop(page=0, category=booking_event.title, search=booking_event.sudo().products.ids, ppg=False, **kwargs)
 
     @http.route(['''/book/product/<model("product.booking"):booking_event>/<model("product.template"):product>'''], type='http', auth='public', website=True)
-    def book_product(self, booking_event, product, **kwargs):
+    def book_product_(self, booking_event, product, **kwargs):
         response = super().product(product, category=None, search='', **kwargs)
         response.qcontext['event'] = booking_event
         return response
@@ -54,6 +54,12 @@ class WebsiteBooking(WebsiteSale):
         #     'pricelist': http.request.website.get_current_pricelist()
         # })
 
+    @http.route(['''/book/<model("product.booking.event"):booking_event>/<model("product.template"):product>'''],
+                type='http', auth='public', website=True)
+    def book_product(self, booking_event, product):
+        return http.request.render("website_sale.product_item", {
+            'product': product
+        })
 
     def _get_search_domain(self, search, category, attrib_values):
         if self.isBookingRoute:

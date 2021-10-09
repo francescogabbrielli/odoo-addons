@@ -1,14 +1,26 @@
 {
     'name': 'Prenotazioni',
     'category': 'Sales',
-    'summary': 'Manage booking events for products',
-    'version': '0.3',
-    'description': 'Gestisce una sezione di prenotazioni all\'interno del modulo vendite',
+    'summary': 'Gestisce eventi di prenotazione prodotti presso fornitori',
+    'version': '0.5',
+    'description': """
+Manage a booking section inside sales module
+===================================================================
+
+Features
+--------
+    * Create and manage booking events at the suppliers
+    * Insert and manage a single booking from a customer for a given product in an event
+    
+    """,
     'author': 'Francesco Gabbrielli',
-    'depends': ['product', 'purchase', 'sale'],
+    'depends': ['product', 'purchase', 'sale', 'web_domain_field'],
     'data': [
         'data/ir_sequence_data.xml',
         'security/booking_model_acl.xml',
-        'views/booking_views.xml'
+        'views/booking_views.xml',
+        'views/report_views.xml',
+        'reports/report.xml'
     ]
 }
+

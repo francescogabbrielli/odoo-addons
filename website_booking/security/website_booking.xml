@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 
-    <record id="product_booking_public" model="ir.rule">
+    <record id="product_booking_event_public" model="ir.rule">
         <field name="name">Public product booking (event)</field>
-        <field name="model_id" ref="product_booking.model_product_booking"/>
+        <field name="model_id" ref="product_booking.model_product_booking_event"/>
         <field name="domain_force">[]</field>
         <field name="groups" eval="[(4, ref('base.group_public')), (4, ref('base.group_portal'))]"/>
         <field name="perm_read" eval="True"/>

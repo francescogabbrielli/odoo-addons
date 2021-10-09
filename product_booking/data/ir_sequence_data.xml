@@ -2,13 +2,23 @@
 
     <data noupdate="1">
 
-        <!-- Sequences for product.product_booking -->
-        <record id="seq_product_booking" model="ir.sequence">
-            <field name="name">Product Booking</field>
-            <field name="code">product.booking</field>
+        <!-- Sequences for product.booking.event -->
+        <record id="seq_product_booking_event" model="ir.sequence">
+            <field name="name">Booking Event</field>
+            <field name="code">product.booking.event</field>
             <field name="active">TRUE</field>
             <field name="prefix">PR</field>
             <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Sequences for product.booking -->
+        <record id="seq_product_booking" model="ir.sequence">
+            <field name="name">Booking</field>
+            <field name="code">product.booking</field>
+            <field name="active">TRUE</field>
+            <field name="padding">10</field>
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
