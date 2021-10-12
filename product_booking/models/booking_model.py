@@ -83,6 +83,10 @@ class Booking(models.Model):
     event = fields.Many2one('product.booking.event', 'Evento',
                                     index=True, ondelete='restrict', required=True)
 
+    status = fields.Selection(string='Stato',
+                              selection=[('A', 'Aperta'), ('C', 'Chiusa'), ('X', 'Annullata')],
+                              default='A')
+
     products = fields.Many2many('product.template', string='Prodotti disponibili', compute="_compute_products", store=False)
 
     booking_lines = fields.One2many('product.booking.line', 'booking', string='Prodotti prenotati',

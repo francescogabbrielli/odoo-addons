@@ -2,14 +2,14 @@
 <odoo>
 
     <act_window id="action_product_booking_events"
-            name="List Booking Events"
-            res_model="product.booking.event"
-            view_mode="tree,form"/>
+                name="List Booking Events"
+                res_model="product.booking.event"
+                view_mode="tree,form"/>
 
     <act_window id="action_product_bookings"
-            name="List Bookings"
-            res_model="product.booking"
-            view_mode="tree,form"/>
+                name="List Bookings"
+                res_model="product.booking"
+                view_mode="tree,form"/>
 
     <!--act_window id="action_report_bookings"
             name="Report"
@@ -17,23 +17,23 @@
             view_mode="tree,form"/-->
 
     <menuitem id="menu_sale_bookings"
-        name="Bookings"
-        parent="sale.sale_menu_root"
-        sequence="2"/>
+              name="Bookings"
+              parent="sale.sale_menu_root"
+              sequence="2"/>
 
     <menuitem id="menu_product_booking_events"
-            action="action_product_booking_events"
-            name="Booking Events"
-            parent="product_booking.menu_sale_bookings"
-            groups="sales_team.group_sale_salesman"
-            sequence="1" />
+              action="action_product_booking_events"
+              name="Booking Events"
+              parent="product_booking.menu_sale_bookings"
+              groups="sales_team.group_sale_salesman"
+              sequence="1"/>
 
     <menuitem id="menu_product_bookings"
-            action="action_product_bookings"
-            name="Bookings"
-            parent="product_booking.menu_sale_bookings"
-            groups="sales_team.group_sale_salesman"
-            sequence="2" />
+              action="action_product_bookings"
+              name="Bookings"
+              parent="product_booking.menu_sale_bookings"
+              groups="sales_team.group_sale_salesman"
+              sequence="2"/>
 
     <!--menuitem id="menu_booking_report"
               action="action_report_bookings"
@@ -92,8 +92,12 @@
             <form>
                 <sheet>
                     <group name="info">
-                        <group><field name="create_uid" string="Creato da"/></group>
-                        <group><field name="create_date" string="in data"/></group>
+                        <group>
+                            <field name="create_uid" string="Creato da"/>
+                        </group>
+                        <group>
+                            <field name="create_date" string="in data"/>
+                        </group>
                     </group>
                     <group name="main" string="Evento">
                         <group name="left">
@@ -106,8 +110,12 @@
                         </group>
                     </group>
                     <group name="dates" string="Validità">
-                        <group><field name="date_from"/></group>
-                        <group><field name="date_to"/></group>
+                        <group>
+                            <field name="date_from"/>
+                        </group>
+                        <group>
+                            <field name="date_to"/>
+                        </group>
                     </group>
                     <group name="products" string="Prodotti prenotabili">
                         <field name="products" nolabel="1"
@@ -148,6 +156,7 @@
                         <field name="date"/>
                         <field name="customer" default_focus="1"/>
                         <field name="event"/>
+                        <field name="status" attrs="{'readonly': [('id', '==', False)]}"/>
                     </group>
                     <field name="products" nolabel="1" invisible="1"/>
                     <group name="products" string="Prodotti prenotati">

@@ -4,26 +4,44 @@
     <template id="report_bookings">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <div class="row bg-primary">
+                <h1>Prenotazioni</h1>
+                <div class="article row bg-primary">
                     <div class="col-2">Nr</div>
                     <div class="col-2">Data</div>
-                    <div class="col-3">Cliente</div>
-                    <div class="col-3">Evento</div>
-                    <div class="col-2">Totale</div>
+                    <div class="col-4">Cliente</div>
+                    <div class="col-4">Evento</div>
                 </div>
                 <t t-foreach="docs" t-as="o">
                     <div class="row">
                         <div class="col-2"><span t-field="o.code"/></div>
                         <div class="col-2"><span t-field="o.date" t-options="{'widget': 'date'}"/></div>
-                        <div class="col-3"><span t-field="o.customer" t-options="{'widget': 'contact'}"/></div>
-                        <div class="col-3"><span t-field="o.event.title" /></div>
-                        <div class="col-2 text-right"><span t-field="o.total"/></div>
+                        <div class="col-4"><span t-field="o.customer" t-options="{'widget': 'contact'}"/></div>
+                        <div class="col-4"><span t-field="o.event.title" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5"> </div>
+                        <div class="col-5 bg-warning">Prodotto</div>
+                        <div class="col-1 bg-warning">Quantità</div>
+                        <div class="col-1 bg-warning">Prezzo</div>
+                    </div>
+                    <t t-foreach="o.booking_lines" t-as="l">
+                        <div class="row">
+                            <div class="col-5"> </div>
+                            <div class="col-5"><span t-field="l.product.name"/></div>
+                            <div class="col-1 text-right"><span t-field="l.quantity"/></div>
+                            <div class="col-1 text-right"><span t-field="l.price"/></div>
+                        </div>
+                    </t>
+                    <div class="row">
+                        <div class="col-10"></div>
+                        <div class="col-1 text-right">Totale:</div>
+                        <div class="col-1 text-right"><span t-field="o.total"/></div>
                     </div>
                 </t>
                 <div class="row">
                     <div class="col-12"><hr/></div>
-                    <div class="col-10 text-right"><b>Totale complessivo:</b></div>
-                    <div class="col-2 text-right"><b><t t-esc="sum([x.total for x in docs])"/></b></div>
+                    <div class="col-11 text-right"><b>Totale:</b></div>
+                    <div class="col-1 text-right"><b><t t-esc="sum([x.total for x in docs])"/></b></div>
                 </div>
             </t>
         </t>

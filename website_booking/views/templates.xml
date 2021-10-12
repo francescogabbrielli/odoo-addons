@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-12" t-field="event.description"/>
                     <div class="col d-flex justify-content-center">
-                        <a role="button" id="event_products" t-attf-href="/book/products/{{event.id}}" class="btn mt8 center btn-primary">Vedi Prodotti</a>
+                        <a role="button" id="event_products" t-attf-href="/book/{{event.id}}" class="btn mt8 center btn-primary">Vedi Prodotti</a>
                     </div>
                 </div>
                 <t t-if="not events">
@@ -26,7 +26,7 @@
         </t>
     </template>
 
-    <!-- /book/products = bookable products per event -->
+    <!-- /book/{event} = bookable products per event -->
     <template id="products" name="Bookable Products">
         <t t-call="website.layout">
             <t t-set="additional_title" t-value="event.title"/>
@@ -50,45 +50,67 @@
     </template>
 
     <template id="products_item">
+
+        <t t-set="combination_info" t-value="product._get_combination_info(only_template=True, add_qty=add_qty or 1)"/>
+
         <span t-field="product.name"/>
-        <div class="oe_product_image">
-            <a itemprop="url" t-attf-href="/book/product/{{product.id}}">
-                <span t-field="product.image" t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300'}"/>
-            </a>
-        </div>
-        <section>
-            <div style="float:right">
-                <a role="button" t-attf-href="/book/products/{{event.id}}" class="btn mt8 center btn-primary">Prenota</a>
+
+        <form action="/shop/cart/update" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+            <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                <div class="oe_product_image">
+                    <a itemprop="url" t-attf-href="/book/{{event.id}}/{{product.id}}">
+                        <span t-field="product.image" t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300'}"/>
+                    </a>
+                </div>
             </div>
-            <h6>
-                <a itemprop="name" t-attf-href="/book/product/{{event.id}}/{{product.id}}" t-att-content="product.name" t-field="product.name" />
-            </h6>
-            <div itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="product_price">
-                <b>
-                    <t t-if="True"><!-- compatibility 12.0 -->
-                        <del t-attf-class="text-danger mr8 {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="white-space: nowrap;" t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />
-                    </t>
-                    <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                    <span itemprop="price" style="display:none;" t-esc="combination_info['price']" />
-                    <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
-                </b>
-                <t t-call="website_booking.uom"/>
-            </div>
-        </section>
+        </form>
+
     </template>
 
     <template id="product" inherit_id="website_sale.product">
+
         <xpath expr="//section/div[1]" position="before">
             <t t-if="event">
-                <h6><a t-attf-href="/book/products/{{event.id}}" t-field="event.title"/></h6>
-            </t>
-            <t t-else="" id="cond1"/>
+                <div class="row">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a t-attf-href="/book/{{event.id}}" t-field="event.title"/>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <span t-field="product.name" />
+                        </li>
+                    </ol>
+                </div>
+            </t><t t-else="" id="cond1"/>
         </xpath>
         <xpath expr="//t[@id='cond1']" position="inside">
             <xpath expr="//section/div[1]" position="move"/>
         </xpath>
-        <xpath t-if="event" expr="//a[@id='add_to_cart']" position="replace">
-            <a href="javascript:new Booking().book()" class="btn btn-primary mt8" js-class="booking">Prenota</a>
+
+        <xpath expr="//a[@id='add_to_cart']" position="after">
+            <t t-if="event">
+                <a role="button" id="book_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" href="#">Prenota</a>
+            </t><t t-else="" id="cond2"/>
+        </xpath>
+        <xpath expr="//t[@id='cond2']" position="inside">
+            <xpath expr="//a[@id='add_to_cart']" position="move"/>
+        </xpath>
+
+    </template>
+
+    <template id="cart" inherit_id="website_sale.cart">
+        <xpath expr="//div[@class='col-12']" position="before">
+            <t t-if="website_sale_order.is_booking()">
+                <h2>Prenotazioni</h2>
+            </t><t t-else="" id="cond1"/>
+        </xpath>
+        <xpath expr="//t[@id='cond1']" position="inside">
+            <xpath expr="//div[@class='col-12']" position="move"/>
+        </xpath>
+
+        <xpath expr="//div[@class='col-12 col-xl-4']" position="attributes">
+            <attribute name="t-if">not website_sale_order.is_booking()</attribute>
         </xpath>
     </template>
 
@@ -99,13 +121,12 @@
     <!-- add UoM to price -->
     <template id="uom_products_item" inherit_id="website_sale.products_item">
         <xpath expr="//b" position="after">
-            /<i class="oe_price" t-field="product.uom_id"/>
-            <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+            <t t-call="website_booking.uom"/>
         </xpath>
     </template>
     <template id="uom_product_price" inherit_id="website_sale.product_price">
         <xpath expr="//b" position="after">
-            /<i class="oe_price" t-field="product.uom_id"/>
+            <t t-call="website_booking.uom"/>
         </xpath>
     </template>
 

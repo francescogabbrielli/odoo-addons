@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 **/.idea
+
+web_domain_field
